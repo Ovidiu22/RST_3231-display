@@ -1,40 +1,58 @@
-/**
- * \file
- *
- * \brief Empty user application template
- *
- */
 
-/**
- * \mainpage User Application template doxygen documentation
- *
- * \par Empty user application template
- *
- * Bare minimum empty user application template
- *
- * \par Content
- *
- * -# Include the ASF header files (through asf.h)
- * -# "Insert system clock initialization code here" comment
- * -# Minimal main function that starts with a call to board_init()
- * -# "Insert application code here" comment
- *
- */
-
-/*
- * Include header files for all drivers that have been imported from
- * Atmel Software Framework (ASF).
- */
-/*
- * Support and FAQ: visit <a href="https://www.microchip.com/support/">Microchip Support</a>
- */
 #include <asf.h>
+#include "I2C.h"
+#include "LCD.h"
+#include "driver_ds3231.h"
+
+#define WRITE 0
+#define IICDEBUG 0
+#define READTIME 1
 
 int main (void)
 {
-	/* Insert system clock initialization code here (sysclk_init()). */
+	initLCD();
+	i2c_init();
 
-	board_init();
+	uint8_t minutes = 0;
+	uint8_t seconds = 0;
+	ds3231_time_t myTime;
+	
+#if WRITE
+	/* Initialize clock */	
+	i2c_start((I2C_DEVICE<<1)+I2C_WRITE);
+	i2c_write(DS3231_REG_SECOND);
+	i2c_write(seconds);
+	i2c_write(DS3231_REG_MINUTE);
+	i2c_write(minutes);
+	
+#endif
 
-	/* Insert application code here, after the board has been initialized. */
+#if READTIME
+		
+	while(1)
+	{
+			i2c_start((I2C_DEVICE<<1)+I2C_WRITE);
+			i2c_write(DS3231_REG_SECOND);
+			/* Send START condition with SLA+R */
+			i2c_rep_start((I2C_DEVICE<<1)+I2C_READ);
+			/* Receive data */
+			myTime.second = i2c_readNak();
+			
+			i2c_start((I2C_DEVICE<<1)+I2C_WRITE);
+			i2c_write(DS3231_REG_MINUTE);
+			/* Send START condition with SLA+R */
+			i2c_rep_start((I2C_DEVICE<<1)+I2C_READ);
+			/* Receive data */
+			myTime.minute = i2c_readNak();
+			
+			displayLCD_main(1, "Current time", NONE, "NONE");
+			displayLCD_main(2, "Minute: ", myTime.minute, "NONE");
+			displayLCD_main(3, "Second:", myTime.second, "NONE");
+	}
+
+#endif
+
+	i2c_stop();
+	
+	
 }
