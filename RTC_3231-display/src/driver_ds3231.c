@@ -124,7 +124,7 @@ static uint8_t a_ds3231_hex2bcd(uint8_t val)
  * @return    hex data
  * @note      none
  */
-static uint8_t a_ds3231_bcd2hex(uint8_t val)
+uint8_t a_ds3231_bcd2hex(uint8_t val)
 {
     uint8_t temp;
     
