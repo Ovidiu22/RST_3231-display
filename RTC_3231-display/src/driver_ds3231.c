@@ -54,7 +54,7 @@
 /**
  * @brief chip address definition
  */
-#define DS3231_ADDRESS        0xD0        /**< iic device address */ 
+#define DS3231_ADDRESS        0x68        /**< iic device address */ 
 
 /**
  * @brief     write one byte

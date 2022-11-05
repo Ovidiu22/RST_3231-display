@@ -36,6 +36,7 @@
  */
 
 #include "driver_ds3231_interface.h"
+#include "I2C.h"
 
 /**
  * @brief  interface iic bus init
@@ -74,6 +75,13 @@ uint8_t ds3231_interface_iic_deinit(void)
  */
 uint8_t ds3231_interface_iic_read(uint8_t addr, uint8_t reg, uint8_t *buf, uint16_t len)
 {
+	i2c_start((addr<<1)+I2C_WRITE);
+	i2c_write(reg);
+	/* Send START condition with SLA+R */
+	i2c_rep_start((addr<<1)+I2C_READ);
+	/* Receive data */
+	buf[0] = a_ds3231_bcd2hex(i2c_readNak());
+	
     return 0;
 }
 
