@@ -1,7 +1,9 @@
 
 #include <asf.h>
-#include "driver_ds3231.h"
+
 #include "driver_ds3231_interface.h"
+#include "driver_ds3231.h"
+#include "driver_ds3231_basic.h"
 #include "I2C.h"
 #include "LCD.h"
 
@@ -11,36 +13,27 @@
 
 int main (void)
 {
-	initLCD();
 	i2c_init();
-	//ds3231_basic_init();
+	initLCD();
 
 	
-#if WRITETIME
-	ds3231_time_t setTime;
+#if READTIME
+	ds3231_time_t t;
+	ds3231_basic_init();
 	
-	ds3231_basic_get_time(ds3231_time_t &setTime);
-	
-#if 0	
-	setTime.hour = 11;
-	setTime.minute = 10;
-	setTime.second = 7;
-
-	/* Initialize time */	
-	i2c_start((I2C_DEVICE<<1)+I2C_WRITE);
-	i2c_write(DS3231_REG_SECOND);
-	i2c_write(a_ds3231_hex2bcd(setTime.second));
-	i2c_start((I2C_DEVICE<<1)+I2C_WRITE);
-	i2c_write(DS3231_REG_MINUTE);
-	i2c_write(a_ds3231_hex2bcd(setTime.minute));
-	i2c_start((I2C_DEVICE<<1)+I2C_WRITE);
- 	i2c_write(DS3231_REG_HOUR);
- 	i2c_write(a_ds3231_hex2bcd(setTime.hour));
-#endif
+ 	while(1)
+ 	{
+		ds3231_basic_get_time(&t);
+		displayLCD_main(1, "Year:", t.year, "NONE");
+		displayLCD_main(2, "Hour:", t.hour, "NONE");
+		displayLCD_main(3, "Minute:", t.minute, "NONE");
+		displayLCD_main(4, "Second:", t.second, "NONE");
+		
+	 }
 #endif
 
 
-#if !WRITETIME // Read time
+#if WRITETIME // Read time
 
 	ds3231_time_t myTime;
 	while(1)
@@ -76,4 +69,7 @@ int main (void)
 
 #endif
 
+	
+
+	return 0;
 }
