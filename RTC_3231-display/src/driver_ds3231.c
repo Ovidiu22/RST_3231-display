@@ -107,7 +107,7 @@ static uint8_t a_ds3231_iic_multiple_read(ds3231_handle_t *handle, uint8_t reg, 
  * @return    bcd data
  * @note      none
  */
-uint8_t a_ds3231_hex2bcd(uint8_t val) //static
+static uint8_t a_ds3231_hex2bcd(uint8_t val)
 {
     uint8_t i, j, k;
     
@@ -124,7 +124,7 @@ uint8_t a_ds3231_hex2bcd(uint8_t val) //static
  * @return    hex data
  * @note      none
  */
-uint8_t a_ds3231_bcd2hex(uint8_t val) //static
+uint8_t a_ds3231_bcd2hex(uint8_t val)
 {
     uint8_t temp;
     

@@ -712,7 +712,7 @@ uint8_t ds3231_get_reg(ds3231_handle_t *handle, uint8_t reg, uint8_t *buf, uint1
  */
 
 uint8_t a_ds3231_bcd2hex(uint8_t val);
-uint8_t a_ds3231_hex2bcd(uint8_t val);
+
 
 /**
  * @brief chip register definition
