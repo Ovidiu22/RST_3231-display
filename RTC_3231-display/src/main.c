@@ -8,68 +8,47 @@
 #include "LCD.h"
 
 #define IICDEBUG 0
-#define WRITETIME 0		//1 - write time; 0 - read time
-#define READTIME 1
+#define WRITETIME 1
 
 int main (void)
 {
+	ds3231_time_t t;
+	
+	ds3231_basic_init();	
 	i2c_init();
 	initLCD();
 
+#if WRITETIME
+	ds3231_time_t setT;
+	uint8_t res;
 	
-#if READTIME
-	ds3231_time_t t;
-	ds3231_basic_init();
-	
+	setT.am_pm = DS3231_AM;
+	setT.date = 8;
+	setT.format = DS3231_FORMAT_24H;
+	setT.hour = 20;
+	setT.minute = 20;
+	setT.month = 11;
+	setT.second = 0;
+	setT.week  = 3;
+	setT.year = 2022;
+	res = ds3231_basic_set_time(&setT);
+	if (res != 0)
+	{
+		//(void)ds3231_basic_deinit();
+
+		return 1;
+	}
+#endif
+
  	while(1)
  	{
 		ds3231_basic_get_time(&t);
-		displayLCD_main(1, "Year:", t.year, "NONE");
+		displayLCD_main(1, "Date:", t.date, "NONE");
 		displayLCD_main(2, "Hour:", t.hour, "NONE");
 		displayLCD_main(3, "Minute:", t.minute, "NONE");
 		displayLCD_main(4, "Second:", t.second, "NONE");
 		
 	 }
-#endif
-
-
-#if WRITETIME // Read time
-
-	ds3231_time_t myTime;
-	while(1)
-	{
-		i2c_start((I2C_DEVICE<<1)+I2C_WRITE);
-		i2c_write(DS3231_REG_SECOND);
-		/* Send START condition with SLA+R */
-		i2c_rep_start((I2C_DEVICE<<1)+I2C_READ);
-		/* Receive data */
-		myTime.second = a_ds3231_bcd2hex(i2c_readNak());
-			
-		i2c_start((I2C_DEVICE<<1)+I2C_WRITE);
-		i2c_write(DS3231_REG_MINUTE);
-		/* Send START condition with SLA+R */
-		i2c_rep_start((I2C_DEVICE<<1)+I2C_READ);
-		/* Receive data */
-		myTime.minute = a_ds3231_bcd2hex(i2c_readNak());
-			
- 		i2c_start((I2C_DEVICE<<1)+I2C_WRITE);
- 		i2c_write(DS3231_REG_HOUR);
- 		/* Send START condition with SLA+R */
- 		i2c_rep_start((I2C_DEVICE<<1)+I2C_READ);
- 		/* Receive data */
- 		myTime.hour = a_ds3231_bcd2hex(i2c_readNak());
-	
-	
-		//displayLCD_main(1, "Current time", NONE, "NONE");
-		displayLCD_main(2, "Hour: ", myTime.hour, "NONE");
-		displayLCD_main(3, "Minute:", myTime.minute, "NONE");
-		displayLCD_main(4, "Second:", myTime.second, "NONE");
-		
-	}
-
-#endif
-
-	
 
 	return 0;
 }

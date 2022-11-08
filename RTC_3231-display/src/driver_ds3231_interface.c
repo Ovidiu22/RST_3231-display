@@ -102,6 +102,11 @@ uint8_t ds3231_interface_iic_read(uint8_t addr, uint8_t reg, uint8_t *buf, uint1
  */
 uint8_t ds3231_interface_iic_write(uint8_t addr, uint8_t reg, uint8_t *buf, uint16_t len)
 {
+	i2c_rep_start((addr<<1)+I2C_WRITE);
+	i2c_write(reg);
+	/* Write data */
+	i2c_write(*buf);
+	
     return 0;
 }
 

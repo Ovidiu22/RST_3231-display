@@ -118,7 +118,7 @@ Outputs:	0 write successful
 			1 write failed
 Description:Sends one byte to I2C device
 ******************************************************************** */
-unsigned char i2c_write( unsigned char data )
+uint8_t i2c_write( uint8_t data )
 {	
 
 	 uint8_t   twst;
@@ -128,7 +128,6 @@ unsigned char i2c_write( unsigned char data )
 
 	 // wait until transmission completed
 	 while(!(TWCR & (1<<TWINT)));
-//displayLCD_main(2, "write: TWSR: ", TWSR, "NONE");
 
 	 // check value of TWI Status Register. Mask prescaler bits
 	 twst = TW_STATUS & 0xF8;
