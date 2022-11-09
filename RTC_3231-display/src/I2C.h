@@ -10,7 +10,12 @@
 
 	/* Address of I2C device */
 	#define I2C_DEVICE                 0x68
-	   
+	
+	/* I2C clock in Hz */
+	#define SCL_CLOCK  100000L
+	
+	/* Clock frequency in Hz */
+	#define F_CPU 16000000UL   
 	
 	/* defines the data direction to read */
 	#define I2C_READ    1

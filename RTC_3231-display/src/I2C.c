@@ -2,9 +2,6 @@
 #define F_CPU 16000000UL
 #endif
 
-/* I2C clock in Hz */
-#define SCL_CLOCK  100000L
-
 #include <inttypes.h>
 #include <compat/twi.h>
 #include "I2C.h"
@@ -50,17 +47,12 @@ Description:Starts I2C communcation, sends SLA+W or SLA+R
 unsigned char i2c_start(unsigned char transmissionMode)
 {
 	uint8_t   twst = 0;
-#if IICDEBUG
-	displayLCD_main(1, "i2c_start", NONE, "NONE");
-#endif
 	/* 1. Send START condition */
 	TWCR = (1<<TWINT) | (1<<TWSTA) | (1<<TWEN);
 
 	// wait until transmission completed
 	while(!(TWCR & (1<<TWINT)));
-#if IICDEBUG
-	displayLCD_main(2, "Start: TWSR: ", TWSR, "NONE");
-#endif
+
 	// Check value of TWI Status Register. Mask prescaler bits.
 	twst = TW_STATUS & 0xF8;		// TWSR
 	if ( (twst != TW_START) && (twst != TW_REP_START)) return 1;
@@ -72,15 +64,11 @@ unsigned char i2c_start(unsigned char transmissionMode)
 
 	// wail until transmission completed and ACK/NACK has been received
 	while(!(TWCR & (1<<TWINT)));
-#if IICDEBUG
-	displayLCD_main(3, "SLA+W/R: TWSR: ", TWSR, "NONE");
-#endif
+
 	// check value of TWI Status Register. Mask prescaler bits.
 	twst = TW_STATUS & 0xF8;
 	if ( (twst != TW_MT_SLA_ACK) && (twst != TW_MR_SLA_ACK) ) return 1;
-#if IICDEBUG
-	displayLCD_main(4, "Start complete", NONE, "NONE"); //_delay_ms(5000);
-#endif
+
 	return 0;
 }
 

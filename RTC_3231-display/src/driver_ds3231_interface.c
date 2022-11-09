@@ -47,6 +47,10 @@
  */
 uint8_t ds3231_interface_iic_init(void)
 {
+	/* initialize TWI clock: 100 kHz clock, TWPS = 0 => prescaler = 1 */
+	TWSR = 0;                         /* no prescaler */
+	TWBR = ((F_CPU/SCL_CLOCK)-16)/2;  /* must be > 10 for stable operation */
+
     return 0;
 }
 
@@ -59,6 +63,7 @@ uint8_t ds3231_interface_iic_init(void)
  */
 uint8_t ds3231_interface_iic_deinit(void)
 {
+	
     return 0;
 }
 
