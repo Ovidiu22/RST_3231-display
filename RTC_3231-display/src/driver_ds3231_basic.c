@@ -36,6 +36,7 @@
  */
 
 #include "driver_ds3231_basic.h"
+#include "driver_ds3231.h"
 
 static ds3231_handle_t gs_handle;        /**< ds3231 handle */
 static int8_t gs_time_zone = 0;          /**< local zone */

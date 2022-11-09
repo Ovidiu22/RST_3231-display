@@ -10,7 +10,12 @@
 
 	/* Address of I2C device */
 	#define I2C_DEVICE                 0x68
-	   
+	
+	/* I2C clock in Hz */
+	#define SCL_CLOCK  100000L
+	
+	/* Clock frequency in Hz */
+	#define F_CPU 16000000UL   
 	
 	/* defines the data direction to read */
 	#define I2C_READ    1
@@ -24,7 +29,7 @@
 	void i2c_stop(void);
 	unsigned char i2c_start(unsigned char addr);
 	unsigned char i2c_rep_start(unsigned char addr);
-	unsigned char i2c_write(unsigned char data);
+	uint8_t i2c_write(uint8_t data);
 	unsigned char i2c_readAck(void);
 	unsigned char i2c_readNak(void);
 	

@@ -46,6 +46,10 @@
  */
 uint8_t ds3231_interface_iic_init(void)
 {
+	/* initialize TWI clock: 100 kHz clock, TWPS = 0 => prescaler = 1 */
+	TWSR = 0;                         /* no prescaler */
+	TWBR = ((F_CPU/SCL_CLOCK)-16)/2;  /* must be > 10 for stable operation */
+
     return 0;
 }
 
@@ -58,6 +62,7 @@ uint8_t ds3231_interface_iic_init(void)
  */
 uint8_t ds3231_interface_iic_deinit(void)
 {
+	
     return 0;
 }
 
@@ -74,6 +79,16 @@ uint8_t ds3231_interface_iic_deinit(void)
  */
 uint8_t ds3231_interface_iic_read(uint8_t addr, uint8_t reg, uint8_t *buf, uint16_t len)
 {
+	for (uint8_t i = 0; i < len; i++)
+	{
+		i2c_rep_start((addr<<1)+I2C_WRITE);
+		i2c_write(reg);
+		/* Send START condition with SLA+R */
+		i2c_rep_start((addr<<1)+I2C_READ);
+		/* Receive data */
+		buf[i] = i2c_readNak();
+		reg += 1;
+	}
     return 0;
 }
 
@@ -90,6 +105,11 @@ uint8_t ds3231_interface_iic_read(uint8_t addr, uint8_t reg, uint8_t *buf, uint1
  */
 uint8_t ds3231_interface_iic_write(uint8_t addr, uint8_t reg, uint8_t *buf, uint16_t len)
 {
+	i2c_rep_start((addr<<1)+I2C_WRITE);
+	i2c_write(reg);
+	/* Write data */
+	i2c_write(*buf);
+	
     return 0;
 }
 

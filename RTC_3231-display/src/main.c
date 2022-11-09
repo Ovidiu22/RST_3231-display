@@ -1,59 +1,51 @@
+/*******************************/
+/*** Created by Ovidiu Sabau ***/
+/***	09th November 2022	 ***/
+/*******************************/
 
 #include <asf.h>
+#include "driver_ds3231_interface.h"
 #include "driver_ds3231.h"
+#include "driver_ds3231_basic.h"
 #include "I2C.h"
 #include "LCD.h"
 
-
-#define WRITE 0
-#define IICDEBUG 0
-#define READTIME 1
+#define WRITETIME 0
 
 int main (void)
 {
+	ds3231_time_t t;
+	
+	ds3231_basic_init();	
 	initLCD();
-	i2c_init();
 
-	uint8_t minutes = 0;
-	uint8_t seconds = 0;
-	ds3231_time_t myTime;
+#if WRITETIME
+	/* Set time */
+	ds3231_time_t setT;
 	
-#if WRITE
-	/* Initialize clock */	
-	i2c_start((I2C_DEVICE<<1)+I2C_WRITE);
-	i2c_write(DS3231_REG_SECOND);
-	i2c_write(seconds);
-	i2c_write(DS3231_REG_MINUTE);
-	i2c_write(minutes);
+	setT.am_pm = DS3231_PM;
+	setT.date = 9;
+	setT.format = DS3231_FORMAT_24H;
+	setT.hour = 18;
+	setT.minute = 39;
+	setT.month = 11;
+	setT.second = 0;
+	setT.week  = 4;
+	setT.year = 2022;
 	
-#endif
-
-#if READTIME
-		
-	while(1)
-	{
-			i2c_start((I2C_DEVICE<<1)+I2C_WRITE);
-			i2c_write(DS3231_REG_SECOND);
-			/* Send START condition with SLA+R */
-			i2c_rep_start((I2C_DEVICE<<1)+I2C_READ);
-			/* Receive data */
-			myTime.second = a_ds3231_bcd2hex(i2c_readNak());
-			
-			i2c_start((I2C_DEVICE<<1)+I2C_WRITE);
-			i2c_write(DS3231_REG_MINUTE);
-			/* Send START condition with SLA+R */
-			i2c_rep_start((I2C_DEVICE<<1)+I2C_READ);
-			/* Receive data */
-			myTime.minute = a_ds3231_bcd2hex(i2c_readNak());
-
-			displayLCD_main(1, "Current time", NONE, "NONE");
-			displayLCD_main(2, "Minute: ", myTime.minute, "NONE");
-			displayLCD_main(3, "Second:", myTime.second, "NONE");
-	}
+	/* Write time to module */
+	ds3231_basic_set_time(&setT);
 
 #endif
-
-	i2c_stop();
 	
-	
+	/* Read and disply current time */
+ 	while(1)
+ 	{
+		ds3231_basic_get_time(&t);
+		displayLCD_main(1, "Date:", t.date, "NONE");
+		displayLCD_main(2, "Hour:", t.hour, "NONE");
+		displayLCD_main(3, "Minute:", t.minute, "NONE");
+		displayLCD_main(4, "Second:", t.second, "NONE");
+	 }
+	return 0;
 }
