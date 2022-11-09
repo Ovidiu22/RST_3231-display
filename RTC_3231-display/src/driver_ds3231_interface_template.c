@@ -36,6 +36,7 @@
  */
 
 #include "driver_ds3231_interface.h"
+#include "I2C.h"
 
 /**
  * @brief  interface iic bus init
