@@ -6,6 +6,6 @@ A project for setting and then reading the time using an Arduino nano and a DS32
 - Set time is done once initially, after which the macro WRITETIME has to be disabled
 - Communication between Arduino and RTC module DS3231 is done over I2C
 
-# Schmatic
+# Schematic
 
 ![Schematic](https://user-images.githubusercontent.com/75970114/200906954-67fbd0dd-4b38-4d2f-b043-a4fb75800857.png)
