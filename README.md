@@ -8,4 +8,4 @@ A project for setting and then reading the time using an Arduino nano and a DS32
 
 # Schematic
 
-![Schematic](https://user-images.githubusercontent.com/75970114/200906954-67fbd0dd-4b38-4d2f-b043-a4fb75800857.png)
+![Schematic](https://user-images.githubusercontent.com/75970114/201161840-f4333bde-0e77-47c1-b04a-a25ce7f1cae8.png)
