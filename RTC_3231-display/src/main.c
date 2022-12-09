@@ -26,11 +26,11 @@ int main (void)
 	setT.am_pm = DS3231_PM;
 	setT.date = 9;
 	setT.format = DS3231_FORMAT_24H;
-	setT.hour = 18;
-	setT.minute = 39;
-	setT.month = 11;
+	setT.hour = 19;
+	setT.minute = 02;
+	setT.month = 12;
 	setT.second = 0;
-	setT.week  = 4;
+	setT.week  = 5;
 	setT.year = 2022;
 	
 	/* Write time to module */
