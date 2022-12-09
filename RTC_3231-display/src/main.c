@@ -38,7 +38,7 @@ int main (void)
 
 #endif
 	
-	/* Read and disply current time */
+	/* Read and display current time */
  	while(1)
  	{
 		ds3231_basic_get_time(&t);
