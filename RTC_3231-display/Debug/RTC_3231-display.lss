@@ -2517,7 +2517,7 @@ int main (void)
      f40:	ce 01       	movw	r24, r28
 #endif
 	
-	/* Read and disply current time */
+	/* Read and display current time */
  	while(1)
  	{
 		ds3231_basic_get_time(&t);

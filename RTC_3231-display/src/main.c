@@ -24,11 +24,11 @@ int main (void)
 	ds3231_time_t setT;
 	
 	setT.am_pm = DS3231_PM;
-	setT.date = 9;
+	setT.date = 31;
 	setT.format = DS3231_FORMAT_24H;
-	setT.hour = 19;
-	setT.minute = 02;
-	setT.month = 12;
+	setT.hour = 17;
+	setT.minute = 07;
+	setT.month = 01;
 	setT.second = 0;
 	setT.week  = 5;
 	setT.year = 2022;
