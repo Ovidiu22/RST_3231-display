@@ -191,7 +191,7 @@ uint8_t ds3231_basic_set_time(ds3231_time_t *t)
     }
     else
     {
-        return 0;
+		return 0;
     }
 }
 

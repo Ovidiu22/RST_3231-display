@@ -37,7 +37,7 @@
 
 #include "driver_ds3231_interface.h"
 #include "I2C.h"
-
+#include "LCD.h"
 /**
  * @brief  interface iic bus init
  * @return status code
@@ -131,7 +131,7 @@ void ds3231_interface_delay_ms(uint32_t ms)
  */
 void ds3231_interface_debug_print(const char *const fmt, ...)
 {
-    
+
 }
 
 /**
